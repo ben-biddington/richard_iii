@@ -1,4 +1,8 @@
-require "richard_iii/version"
+dir = File.join(File.dirname(__FILE__))
+
+$LOAD_PATH.unshift File.join(dir, 'richard_iii')
+
+Dir.glob(File.join(dir, "richard_iii", "**", "*.rb")).each {|f| require f}
 
 module Richard
   class III
