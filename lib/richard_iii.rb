@@ -89,4 +89,16 @@ module Richard
       self.verb.eql?(other.verb) && self.uri.eql?(other.uri) && self.headers == other.headers && self.body.eql?(other.body)
     end
   end
+
+  class Response
+    attr_reader :status, :headers, :body
+
+    def initialize(opts={})
+      @status,@headers,@body = opts[:status],opts[:headers],opts[:body]
+    end
+
+    def eql?(other)
+      self.status.eql?(other.status) && self.headers == other.headers && self.body.eql?(other.body)
+    end
+  end
 end
