@@ -38,14 +38,14 @@ module Richard
   end
 
   class Request
-    attr_reader :verb, :uri
+    attr_reader :verb, :uri, :headers
 
     def initialize(opts={})
-      @verb,@uri = opts[:verb],opts[:uri]
+      @verb,@uri,@headers = opts[:verb],opts[:uri],opts[:headers]
     end
 
     def eql?(other)
-      self.verb.eql?(other.verb) && self.uri.eql?(other.uri)
+      self.verb.eql?(other.verb) && self.uri.eql?(other.uri) && self.headers.eql?(other.headers)
     end
   end
 end
