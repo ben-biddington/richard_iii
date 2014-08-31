@@ -3,10 +3,6 @@ require 'minitest/pride'
 
 module Richard
   module Internal
-    class RequestLineParser
-      
-    end
-
     class RequestLine
       attr_reader :method, :uri
       
