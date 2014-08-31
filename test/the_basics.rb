@@ -28,7 +28,7 @@ module Richard
     end
 
     def exec(text)
-      lines = text.lines.map(&:chomp)
+      lines = text.lines.map(&:chomp).map(&:strip)
 
       verb = lines.first.match(/^(\w+)/)[1]
       path = lines.first.match(/(\S+)$/)[1]
@@ -62,9 +62,9 @@ describe 'The basics of Richard III' do
     richard_iii = Richard::III.new :internet => spy_internet
 
     richard_iii.exec <<-TEXT 
-GET /1.1/statuses
-Host: api.twitter.com
-Accept: application/json
+      GET /1.1/statuses
+      Host: api.twitter.com
+      Accept: application/json
     TEXT
 
     spy_internet.verify
