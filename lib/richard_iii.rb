@@ -53,7 +53,7 @@ module Richard
     end
 
     def exec(text)
-      request_line = Richard::Internal::BasicRequestLineParser.from text
+      request_line = request_line_from text
 
       @internet.execute Request.new(
         :verb     => request_line.verb, 
@@ -64,6 +64,10 @@ module Richard
     end
 
     private
+
+    def request_line_from(text)
+      Richard::Internal::BasicRequestLineParser.from text
+    end
 
     def headers_from(text)
       result = {}
