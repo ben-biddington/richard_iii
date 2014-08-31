@@ -1,21 +1,5 @@
 require File.join '.', 'test', 'helper'
 
-module Richard
-  module Internal
-    class RequestLine
-      attr_reader :method, :uri
-      
-      def initialize(opts = {})
-        @method,@uri = opts[:method],opts[:uri]
-      end
-
-      def eql?(other)
-        return self.method == other.method && self.uri == other.uri
-      end
-    end
-  end
-end
-
 describe 'The basics of Richard III' do
   it "can issue a very simple request" do
     spy_internet = MiniTest::Mock.new
