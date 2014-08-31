@@ -10,7 +10,7 @@ class SpyInternet
   end
 
   def must_have_been_asked_to_execute(what)
-    @requests.any?{|it| it.eql? what}.must_be :==, :true
+    @requests.any?{|it| it.eql? what}.must_be :==, true, "Unable to locate match for:\n\n#{what.inspect}\n\nin:\n\n#{@requests.inspect}"
   end
 end
 
@@ -30,10 +30,14 @@ describe 'The basics of Richard III' do
       Request.new(
         :verb    => 'GET', 
         :uri     => 'https://api.twitter.com/1.1/statuses',
-        :headers => {'Accept' => 'application/json'}
+        :headers => {
+           'Host'   => 'api.twitter.com',
+           'Accept' => 'application/json'
+        }
       )
     )
   end
 
   # TEST: where does it read the protocol part (HTTP of HTTPS)
+  # TEST: looks like you can either supply absolute uri, or relative AND Host header
 end
