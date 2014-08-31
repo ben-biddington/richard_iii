@@ -45,7 +45,19 @@ module Richard
       class << self
         def as_string(reply)
           return '' if reply.nil?
-          "HTTP/1.1 #{reply.status}"
+          (
+            ["HTTP/1.1 #{reply.status}"] + 
+            headers_from(reply) + 
+            ["#{reply.body}"]
+          ).join("\n")
+        end
+
+        private
+
+        def headers_from(reply)
+          reply.headers.map do |name, value|
+            "#{name}: #{value}"
+          end.to_a
         end
       end
     end
@@ -116,6 +128,10 @@ module Richard
 
     def eql?(other)
       self.status.eql?(other.status) && self.headers == other.headers && self.body.eql?(other.body)
+    end
+
+    def each_header(&block)
+      self.headers.each_pair{|k,v| block.call(k,v)}
     end
   end
 
