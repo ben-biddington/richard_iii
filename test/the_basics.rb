@@ -1,12 +1,22 @@
 require File.join '.', 'test', 'helper'
 
+class SpyInternet
+  def initialize
+    @requests = []
+  end
+
+  def execute(request)
+    @requests << request
+  end
+
+  def must_have_been_asked_to_execute(what)
+    @requests.any?{|it| it.eql? what}
+  end
+end
+
 describe 'The basics of Richard III' do
   it "can issue a very simple request" do
-    spy_internet = MiniTest::Mock.new
-
-    spy_internet.expect :execute, nil do |actual|
-      actual.first.eql? Request.new(:verb => 'GET', :uri => 'https://api.twitter.com/1.1/statuses')
-    end
+    spy_internet = SpyInternet.new
 
     richard_iii = Richard::III.new :internet => spy_internet
 
@@ -16,7 +26,7 @@ describe 'The basics of Richard III' do
       Accept: application/json
     TEXT
 
-    spy_internet.verify
+    spy_internet.must_have_been_asked_to_execute Request.new(:verb => 'GET', :uri => 'https://api.twitter.com/1.1/statuses')
   end
 
   # TEST: where does it read the protocol part (HTTP of HTTPS)
