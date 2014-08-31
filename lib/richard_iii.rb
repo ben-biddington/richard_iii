@@ -24,10 +24,19 @@ module Richard
       class << self
         def from(text)
           lines = text.lines.map(&:chomp).map(&:strip)
-          lines.drop(1).map do |line|
+          lines.drop(1).take_while{|line| !line.strip.empty?}.map do |line|
             name,value = line.split(':')
             RequestHeader.new name.strip, value.strip
           end
+        end
+      end
+    end
+
+    class BasicBodyParser
+      class << self
+        def from(text)
+          lines = text.lines.map(&:chomp).map(&:strip)
+          lines.drop_while{|line| !line.strip.empty?}.drop(1).first
         end
       end
     end
@@ -49,7 +58,8 @@ module Richard
       @internet.execute Request.new(
         :verb     => request_line.verb, 
         :uri      => request_line.uri,
-        :headers  => headers_from(text)
+        :headers  => headers_from(text),
+        :body     => body_from(text)
       )
     end
 
@@ -62,17 +72,21 @@ module Richard
 
       result
     end
+
+    def body_from(text)
+      Internal::BasicBodyParser.from(text)
+    end
   end
 
   class Request
-    attr_reader :verb, :uri, :headers
+    attr_reader :verb, :uri, :headers, :body
 
     def initialize(opts={})
-      @verb,@uri,@headers = opts[:verb],opts[:uri],opts[:headers]
+      @verb,@uri,@headers,@body = opts[:verb],opts[:uri],opts[:headers],opts[:body]
     end
 
     def eql?(other)
-      self.verb.eql?(other.verb) && self.uri.eql?(other.uri) && self.headers == other.headers
+      self.verb.eql?(other.verb) && self.uri.eql?(other.uri) && self.headers == other.headers && self.body.eql?(other.body)
     end
   end
 end
