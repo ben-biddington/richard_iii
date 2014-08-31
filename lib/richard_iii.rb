@@ -41,6 +41,15 @@ module Richard
       end
     end
 
+    class CurlFormat
+      class << self
+        def as_string(reply)
+          return '' if reply.nil?
+          "HTTP/1.1 #{reply.status}"
+        end
+      end
+    end
+    
     RequestLine   = Struct.new 'RequestLine'  , :verb, :uri
     RequestHeader = Struct.new 'RequestHeader', :name, :value
   end
@@ -55,12 +64,16 @@ module Richard
     def exec(text)
       request_line = request_line_from text
 
-      @internet.execute Request.new(
-        :verb     => request_line.verb, 
-        :uri      => request_line.uri,
-        :headers  => headers_from(text),
-        :body     => body_from(text)
+      reply = @internet.execute(
+        Request.new(
+          :verb     => request_line.verb, 
+          :uri      => request_line.uri,
+          :headers  => headers_from(text),
+          :body     => body_from(text)
+        )
       )
+
+      Internal::CurlFormat.as_string reply
     end
 
     private
@@ -104,5 +117,9 @@ module Richard
     def eql?(other)
       self.status.eql?(other.status) && self.headers == other.headers && self.body.eql?(other.body)
     end
+  end
+
+  Status = Struct.new 'Status', :code, :desc do 
+    def to_s; "#{code} #{desc}"; end
   end
 end

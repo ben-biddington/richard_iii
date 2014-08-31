@@ -53,13 +53,13 @@ describe 'The basics of Richard III' do
   end
 
   it "can be used to conduct a conversation" do
-    spy_internet = SpyInternet.new
+    internet = SpyInternet.new
 
-    richard_iii = Richard::III.new :internet => spy_internet
+    richard_iii = Richard::III.new :internet => internet
 
-    spy_internet.always_return(
+    internet.always_return(
       Response.new(
-        :status  => 400,          
+        :status  => Status.new(400, 'Bad Request'),          
         :headers => {
            'content-length'            => 24,
            'content-type'              => 'text/plain;charset=utf-8',
