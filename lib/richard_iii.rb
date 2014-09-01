@@ -48,7 +48,7 @@ module Richard
           (
             ["HTTP/1.1 #{reply.status}"] + 
             headers_from(reply) + 
-            ["#{reply.body}"]
+            ["\n#{reply.body.strip}\n"]
           ).join("\n")
         end
 
