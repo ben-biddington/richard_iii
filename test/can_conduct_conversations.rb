@@ -41,4 +41,6 @@ x-connection-hash: 7710cb2762e0a47702d21bb7e10d3056
 Bad Authentication data
 REPLY
   end
+
+  #TEST: You need to be able to match headers partially to avoid for example set-cookie above
 end
