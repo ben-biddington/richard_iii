@@ -39,11 +39,11 @@ module Richard
       class << self
         def as_string(reply)
           return '' if reply.nil?
-          (
+          CurlReply.new((
             ["HTTP/1.1 #{reply.status}"] + 
             headers_from(reply) + 
             ["\n#{reply.body.strip}\n"]
-          ).join("\n")
+          ).join("\n"))
         end
 
         private
@@ -55,7 +55,29 @@ module Richard
         end
       end
     end
-    
+
+    class CurlReply
+      def initialize(text)
+        @text = text
+      end
+
+      def eql?(text)
+        trim(@text).eql? trim(text)
+      end
+
+      def equals?(text); self.eql? text; end
+      def ==(text); self.eql? text; end
+
+      def to_s; @text; end
+      def inspect; to_s; end
+
+      private
+
+      def trim(text)
+        text.lines.map(&:chomp).map(&:strip)
+      end
+    end
+
     RequestLine   = Struct.new 'RequestLine'  , :verb, :uri
     RequestHeader = Struct.new 'RequestHeader', :name, :value
   end
