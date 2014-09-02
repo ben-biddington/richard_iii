@@ -63,6 +63,6 @@ describe "Full conversations" do
       Bad Authentication data
     REPLY
 
-    assert false == @reply.matches?(expected), "Expected <#{@reply}> to NOT match <#{expected}>"
+    @reply.must_not_match expected
   end
 end
