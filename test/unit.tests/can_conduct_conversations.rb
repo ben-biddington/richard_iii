@@ -55,6 +55,17 @@ describe "Full conversations" do
     @reply.must_match expected
   end
 
+  it "fails when the response line does not match" do
+    expected = <<-REPLY 
+      HTTP/1.1 XXX_BAD_RESPONSE_LINE
+      content-type: text/plain;charset=utf-8
+
+      Bad Authentication data
+    REPLY
+
+    @reply.must_not_match expected
+  end
+
   it "fails, for example, when you expected a header that is not present" do
     expected = <<-REPLY 
       HTTP/1.1 400 Bad Request
