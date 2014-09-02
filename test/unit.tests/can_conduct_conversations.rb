@@ -65,4 +65,15 @@ describe "Full conversations" do
 
     @reply.must_not_match expected
   end
+
+  it "fails when the body does not match" do
+    expected = <<-REPLY 
+      HTTP/1.1 400 Bad Request
+      content-type: text/plain;charset=utf-8
+
+      Who says famine has to be depressing
+    REPLY
+
+    @reply.must_not_match expected
+  end
 end
