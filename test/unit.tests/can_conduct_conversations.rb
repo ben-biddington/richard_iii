@@ -53,11 +53,13 @@ describe "Full conversations" do
       Accept: application/json
     TEXT
 
-    assert_true reply.matches? <<-REPLY 
+    expected = <<-REPLY 
       HTTP/1.1 400 Bad Request
       content-type: text/plain;charset=utf-8
 
       Bad Authentication data
     REPLY
+
+    assert(reply.matches?(expected), "Expected <#{reply}> to match <#{expected}>")
   end
 end

@@ -61,6 +61,13 @@ module Richard
         @text = text
       end
 
+      def matches?(expected)
+        actual_lines   = trim(@text)
+        expected_lines = trim(expected)
+        
+        return (actual_lines & expected_lines).size.eql? expected_lines.size
+      end
+
       def eql?(text)
         trim(@text).eql? trim(text)
       end
