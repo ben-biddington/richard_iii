@@ -30,7 +30,7 @@ module Richard
     private
     
     def request_line_from(text)
-      Richard::Internal::BasicRequestLineParser.from text
+      Richard::Internal::BasicRequestLineParser.from text, headers_from(text)
     end
 
     def headers_from(text)

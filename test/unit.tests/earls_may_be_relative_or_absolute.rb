@@ -8,7 +8,7 @@ describe "Request earls may be absolute or relative" do
 
     err = lambda { richard_iii.exec 'GET /1.1/statuses' }.must_raise RuntimeError
 
-    err.message.must_match /missing host header/
+    err.message.must_match /missing host header/i
   end
 
   it "ignores host header when earl is absolute -- that is it does not send it"

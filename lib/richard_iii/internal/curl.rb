@@ -2,14 +2,20 @@ module Richard
   module Internal
     class BasicRequestLineParser
       class << self
-        def from(text)
+        def from(text, headers)
           lines = text.lines.map(&:chomp).map(&:strip)
 
           verb = lines.first.match(/^(\w+)/)[1]
           path = lines.first.match(/(\S+)$/)[1]
-          host = lines[1].match(/Host: (.+)$/)[1]
+          host = headers["Host"]
 
-          RequestLine.new(verb, "https://#{host}#{path}")
+          is_absolute = path.include?('://')
+
+          fail "Missing host header. When you supply a relative earl you have to supply host header too." if !is_absolute && host.nil?
+
+          earl = is_absolute ? path : "https://#{host}#{path}"
+
+          RequestLine.new(verb, earl)
         end
       end
     end
