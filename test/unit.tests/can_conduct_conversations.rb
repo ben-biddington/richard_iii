@@ -52,7 +52,7 @@ describe "Full conversations" do
       Bad Authentication data
     REPLY
 
-    assert(@reply.matches?(expected), "Expected <#{@reply}> to match <#{expected}>")
+    @reply.must_match expected
   end
 
   it "fails, for example, when you expected a header that is not present" do
