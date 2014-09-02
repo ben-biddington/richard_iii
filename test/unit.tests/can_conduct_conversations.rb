@@ -55,7 +55,14 @@ describe "Full conversations" do
     assert(@reply.matches?(expected), "Expected <#{@reply}> to match <#{expected}>")
   end
 
-  it "fails when you expected a header that is not present" do
-    
+  it "fails, for example, when you expected a header that is not present" do
+    expected = <<-REPLY 
+      HTTP/1.1 400 Bad Request
+      xxx: this_one_is_not_present
+
+      Bad Authentication data
+    REPLY
+
+    assert false == @reply.matches?(expected), "Expected <#{@reply}> to NOT match <#{expected}>"
   end
 end
