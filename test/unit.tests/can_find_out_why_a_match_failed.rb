@@ -41,6 +41,4 @@ describe "Finding out why a match failed" do
 
     @reply.surplus.must_equal ['xxx_body_differs_xxx']
   end
-
-  # TEST: reasons emoty when mach is successful
 end
