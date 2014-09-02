@@ -4,7 +4,7 @@ module Richard
 
     def initialize(text)
       @text = text
-      @missing = []
+      @missing = @surplus = []
     end
 
     def matches?(expected)
