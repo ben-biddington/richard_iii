@@ -19,18 +19,18 @@ describe "Full conversations" do
         :body => 'Bad Authentication data'
       )
     )
-  end
 
-  it "can be used to conduct a conversation" do
     richard_iii = Richard::III.new :internet => @internet
 
-    reply = richard_iii.exec <<-TEXT 
+    @reply = richard_iii.exec <<-TEXT 
       GET /1.1/statuses
       Host: api.twitter.com
       Accept: application/json
     TEXT
+  end
 
-    assert_equal reply, <<-REPLY 
+  it "can be used to conduct a conversation" do
+    assert_equal @reply, <<-REPLY 
       HTTP/1.1 400 Bad Request
       content-length: 24
       content-type: text/plain;charset=utf-8
@@ -45,14 +45,6 @@ describe "Full conversations" do
   end
 
   it "can match partially, so that you can ignore headers like date" do
-    richard_iii = Richard::III.new :internet => @internet
-
-    reply = richard_iii.exec <<-TEXT 
-      GET /1.1/statuses
-      Host: api.twitter.com
-      Accept: application/json
-    TEXT
-
     expected = <<-REPLY 
       HTTP/1.1 400 Bad Request
       content-type: text/plain;charset=utf-8
@@ -60,6 +52,10 @@ describe "Full conversations" do
       Bad Authentication data
     REPLY
 
-    assert(reply.matches?(expected), "Expected <#{reply}> to match <#{expected}>")
+    assert(@reply.matches?(expected), "Expected <#{@reply}> to match <#{expected}>")
+  end
+
+  it "fails when you expected a header that is not present" do
+    
   end
 end
