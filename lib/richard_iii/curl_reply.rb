@@ -1,6 +1,6 @@
 module Richard
   class CurlReply
-    attr_reader :surplus
+    attr_reader :missing
 
     def initialize(text)
       @text = text
@@ -14,7 +14,7 @@ module Richard
       
       intersection = (actual_lines & expected_lines)
 
-      @surplus = expected_lines - intersection
+      @missing = expected_lines - intersection
   
       return intersection.size.eql? expected_lines.size
     end

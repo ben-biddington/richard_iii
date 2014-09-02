@@ -29,7 +29,7 @@ describe "Finding out why a match failed" do
     TEXT
   end
 
-  it "returns something that knows which expected lines are missing, i.e., are surplus" do
+  it "returns something that knows which expected lines are missing" do
     expected = <<-REPLY 
       HTTP/1.1 400 Bad Request
       content-type: text/plain;charset=utf-8
@@ -39,6 +39,6 @@ describe "Finding out why a match failed" do
 
     @reply.must_not_match expected
 
-    @reply.surplus.must_equal ['xxx_body_differs_xxx']
+    @reply.missing.must_equal ['xxx_body_differs_xxx']
   end
 end
