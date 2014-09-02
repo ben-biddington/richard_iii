@@ -1,11 +1,10 @@
 require File.join '.', 'test', 'helper'
+
 describe "Full conversations" do 
-  it "can be used to conduct a conversation" do
-    internet = SpyInternet.new
+  before do
+    @internet = SpyInternet.new
 
-    richard_iii = Richard::III.new :internet => internet
-
-    internet.always_return(
+    @internet.always_return(
       Response.new(
         :status  => Status.new(400, 'Bad Request'),
         :headers => {
@@ -20,6 +19,10 @@ describe "Full conversations" do
         :body => 'Bad Authentication data'
       )
     )
+  end
+
+  it "can be used to conduct a conversation" do
+    richard_iii = Richard::III.new :internet => @internet
 
     reply = richard_iii.exec <<-TEXT 
       GET /1.1/statuses
@@ -41,5 +44,20 @@ describe "Full conversations" do
     REPLY
   end
 
-  #TEST: You need to be able to match headers partially to avoid for example set-cookie above
+  it "can match partially, so that you can ignore headers like date" do
+    richard_iii = Richard::III.new :internet => @internet
+
+    reply = richard_iii.exec <<-TEXT 
+      GET /1.1/statuses
+      Host: api.twitter.com
+      Accept: application/json
+    TEXT
+
+    assert_true reply.matches? <<-REPLY 
+      HTTP/1.1 400 Bad Request
+      content-type: text/plain;charset=utf-8
+
+      Bad Authentication data
+    REPLY
+  end
 end
