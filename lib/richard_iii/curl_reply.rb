@@ -1,14 +1,22 @@
 module Richard
   class CurlReply
+    attr_reader :surplus
+
     def initialize(text)
       @text = text
+      @missing = []
     end
 
     def matches?(expected)
       actual_lines   = trim(@text)
+      
       expected_lines = trim(expected)
-        
-      return (actual_lines & expected_lines).size.eql? expected_lines.size
+      
+      intersection = (actual_lines & expected_lines)
+
+      @surplus = expected_lines - intersection
+  
+      return intersection.size.eql? expected_lines.size
     end
 
     def eql?(text)
