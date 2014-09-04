@@ -7,13 +7,9 @@ module Richard
         @text = text || fail("You need to supply some text even if it's empty")
       end
 
-      def hash; @text.hash; end
-
-      def eql?(other_line)
-        self.text.eql? other_line.text
+      def matches?(text)
+        @text.eql?(text)
       end
-
-      def to_s; self.text; end
     end
   end
 end
