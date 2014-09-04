@@ -33,7 +33,11 @@ module Richard
     private
     
     def trim(text)
-      text.lines.map(&:chomp).map(&:strip).map{|text| Richard::Internal::TextLine.new(text)}
+      convert_all text.lines.map(&:chomp).map(&:strip)
+    end
+
+    def convert_all(lines=[])
+      lines.map{|text| Richard::Internal::TextLine.new(text)}
     end
   end
 end
