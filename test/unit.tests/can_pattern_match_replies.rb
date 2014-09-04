@@ -18,7 +18,7 @@ describe "Pattern matching on reply lines" do
     curl_reply.must_match <<-REPLY 
       HTTP/1.1 400 Bad Request
       content-type: text/plain;charset=utf-8
-      set-cookie: /Domain=.twitter.com; Path=/;/
+      /set-cookie:.+Domain=.twitter.com; Path=\/;/
     REPLY
   end
 
