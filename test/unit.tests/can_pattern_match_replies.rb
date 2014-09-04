@@ -4,7 +4,7 @@ describe "Pattern matching on reply lines" do
   before do
     @curl_reply = CurlReply.new <<-TEXT
       HTTP/1.1 400 Bad Request
-      content-length: 24
+      
       content-type: text/plain;charset=utf-8
       date: Sat, 30 Aug 2014 01:30:43 UTC
       server: tsa_a
@@ -24,6 +24,14 @@ describe "Pattern matching on reply lines" do
     REPLY
   end
 
-  it "another example might be /content-length: \d+/"
+  it "another example might be /content-length: \d+/" do 
+    skip("WIP: for some reason the backslash is being dropped")
+    @curl_reply.must_match <<-REPLY 
+      HTTP/1.1 400 Bad Request
+      content-type: text/plain;charset=utf-8
+      /content-length: \d+/
+    REPLY
+  end
+
   it "how are we goung to fail in a way that tels you a pattern match failed?"
 end
