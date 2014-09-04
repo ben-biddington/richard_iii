@@ -1,8 +1,8 @@
 require File.join '.', 'test', 'helper'
 
 describe "Pattern matching on reply lines" do
-  it "allows you to match part of a dynamic header, for example" do
-    curl_reply = CurlReply.new <<-TEXT
+  before do
+    @curl_reply = CurlReply.new <<-TEXT
       HTTP/1.1 400 Bad Request
       content-length: 24
       content-type: text/plain;charset=utf-8
@@ -14,8 +14,10 @@ describe "Pattern matching on reply lines" do
 
       Bad Authentication data
     TEXT
+  end
 
-    curl_reply.must_match <<-REPLY 
+  it "allows you to match part of a dynamic header, for example" do
+    @curl_reply.must_match <<-REPLY 
       HTTP/1.1 400 Bad Request
       content-type: text/plain;charset=utf-8
       /set-cookie:.+Domain=.twitter.com; Path=\/;/

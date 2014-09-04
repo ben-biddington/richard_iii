@@ -48,7 +48,7 @@ module Richard
 
     def convert_all(lines=[])
       lines.map do |text| 
-        Richard::Internal::TextLine.new(text)
+        text.start_with?("/") ? Richard::Internal::PatternLine.new(text) : Richard::Internal::TextLine.new(text)
       end
     end
   end
