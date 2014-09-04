@@ -20,12 +20,10 @@ module Richard
         actual_lines.none?{|line| expected.matches?(line)}
       end
 
-      intersection = (actual_lines & matches)
-
       @missing = expectations_that_did_not_match_anything.map(&:text)
       @surplus = actual_lines - matches
 
-      return intersection.size.eql? expected_lines.size
+      return matches.size.eql? expected_lines.size
     end
 
     def eql?(text)
