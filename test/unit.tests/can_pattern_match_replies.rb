@@ -20,7 +20,7 @@ describe "Pattern matching on reply lines" do
     @curl_reply.must_match <<-REPLY 
       HTTP/1.1 400 Bad Request
       content-type: text/plain;charset=utf-8
-      /set-cookie:.+Domain=.twitter.com; Path=\/;/
+      /set-cookie: .+Domain=.twitter.com; Path=\/;/
     REPLY
   end
 
@@ -33,5 +33,5 @@ describe "Pattern matching on reply lines" do
     REPLY
   end
 
-  it "how are we goung to fail in a way that tels you a pattern match failed?"
+  it "how are we going to fail in a way that tells you a pattern match failed?"
 end
