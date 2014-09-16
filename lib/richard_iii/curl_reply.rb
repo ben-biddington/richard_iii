@@ -5,13 +5,18 @@ module Richard
     def initialize(text)
       @text = text
       @missing = @surplus = []
+      @pretty = false
+    end
+
+    def use_pretty_xml
+      @pretty = true;
     end
 
     def matches?(expected)
       actual_lines   = strip(@text)
       
       expected_lines = parse(expected)
-      
+   
       matches = actual_lines.select do |line|
         expected_lines.any?{|it| it.matches?(line)}
       end
@@ -43,12 +48,38 @@ module Richard
     end
 
     def strip(text)
-      text.lines.map(&:chomp).map(&:strip)
+      format(text).map(&:chomp).map(&:strip)
+    end
+    
+    def format(text)
+      return text.lines unless @pretty
+     
+      lines = text.lines
+      
+      body = lines.delete_at(lines.size-1)
+
+      lines += XmlFormat.pretty(body)
+
+      lines
     end
 
     def convert_all(lines=[])
       lines.map do |text| 
         text.start_with?("/") ? Richard::Internal::PatternLine.new(text) : Richard::Internal::TextLine.new(text)
+      end
+    end
+  end
+
+  class XmlFormat 
+    class << self
+      def pretty(text)
+        require 'nokogiri'
+    
+        doc = Nokogiri.XML(text) do |config|
+          config.default_xml.noblanks
+        end
+
+        doc.to_xml(:indent => 2).lines.drop(1)
       end
     end
   end
