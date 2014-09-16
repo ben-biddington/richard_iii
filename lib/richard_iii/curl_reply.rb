@@ -58,7 +58,7 @@ module Richard
       
       body = lines.delete_at(lines.size-1)
 
-      lines += XmlFormat.pretty(body)
+      lines += Richard::Internal::XmlFormat.pretty(body)
 
       lines
     end
@@ -66,20 +66,6 @@ module Richard
     def convert_all(lines=[])
       lines.map do |text| 
         text.start_with?("/") ? Richard::Internal::PatternLine.new(text) : Richard::Internal::TextLine.new(text)
-      end
-    end
-  end
-
-  class XmlFormat 
-    class << self
-      def pretty(text)
-        require 'nokogiri'
-    
-        doc = Nokogiri.XML(text) do |config|
-          config.default_xml.noblanks
-        end
-
-        doc.to_xml(:indent => 2).lines.drop(1)
       end
     end
   end
