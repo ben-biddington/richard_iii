@@ -54,7 +54,7 @@ module Richard
     def format(text)
       return text.lines unless @pretty
      
-      lines = text.lines
+      lines = text.lines.to_a
       
       body = lines.delete_at(lines.size-1)
 
