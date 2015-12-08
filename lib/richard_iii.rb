@@ -12,6 +12,10 @@ module Richard
       @internet = opts[:internet] || fail("You need to supply :internet")
     end
 
+    def self.exec(opts={}, text)
+      III.new(opts).exec text
+    end
+    
     def exec(text)
       request_line = request_line_from text
 
